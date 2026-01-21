@@ -98,7 +98,7 @@ export default function App() {
 
     try {
       // Connect to the FastAPI Backend (Port 8000)
-      const response = await fetch('http://localhost:8000/analyze', {
+      const response = await fetch('https://poseidon-backend-1m85.onrender.com', {
         method: 'POST',
         body: formData,
       });
