@@ -91,9 +91,9 @@ phishermen/
 
 ### Prerequisites
 
-* Python 3.10 or higher
-* Node.js and npm
-* Git
+- Python 3.10 or higher
+- Node.js and npm
+- Git
 
 ### 1. Clone the Repository
 
@@ -107,9 +107,11 @@ cd phishermen
 \`\`\`bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
+source venv/bin/activate
 pip install -r requirements.txt
 \`\`\`
+
+On Windows, use `venv\Scripts\activate` instead of the `source` line above.
 
 Create a `.env` file inside the `backend` directory:
 
