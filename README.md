@@ -6,13 +6,13 @@ Poseidon is an automated cyber-forensic analysis engine designed to ingest, pars
 
 ## Table of Contents
 
-* [Abstract and Problem Statement](#abstract-and-problem-statement)
-* [Core Machine Learning Architecture (`scikit-learn`)](#core-machine-learning-architecture-scikit-learn)
-* [System Architecture and Workflow](#system-architecture-and-workflow)
-* [Technology Stack](#technology-stack)
-* [Project Structure](#project-structure)
-* [Installation and Local Setup](#installation-and-local-setup)
-* [API Endpoints](#api-endpoints)
+- [Abstract and Problem Statement](#abstract-and-problem-statement)
+- [Core Machine Learning Architecture (scikit-learn)](#core-machine-learning-architecture-scikit-learn)
+- [System Architecture and Workflow](#system-architecture-and-workflow)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Installation and Local Setup](#installation-and-local-setup)
+- [API Endpoints](#api-endpoints)
 
 ---
 
@@ -24,7 +24,7 @@ Poseidon addresses this challenge by providing an automated pipeline that ingest
 
 ---
 
-## Core Machine Learning Architecture (`scikit-learn`)
+## Core Machine Learning Architecture (scikit-learn)
 
 The core intelligence of Poseidon relies on a robust `scikit-learn` machine learning pipeline designed for high-throughput anomaly detection and text-based log classification.
 
@@ -32,15 +32,15 @@ The core intelligence of Poseidon relies on a robust `scikit-learn` machine lear
 
 Raw web server logs (Apache/Nginx/Custom format) are unstructured strings containing timestamps, IP addresses, HTTP methods, endpoints, status codes, and user agents.
 
-* **TF-IDF Vectorization (`TfidfVectorizer`):** Text payloads (such as requested URIs and query parameters) are transformed into numerical vectors using Term Frequency-Inverse Document Frequency. This highlights anomalous terms, special characters (e.g., `'`, `;`, `--`), and unusual path lengths indicative of injection attacks.
-* **Numerical Feature Scaling:** IP request frequencies, payload sizes, and temporal attributes are normalized using `StandardScaler` to ensure balanced feature weighting during model training and inference.
+- **TF-IDF Vectorization (`TfidfVectorizer`):** Text payloads (such as requested URIs and query parameters) are transformed into numerical vectors using Term Frequency-Inverse Document Frequency. This highlights anomalous terms, special characters (e.g., `'`, `;`, `--`), and unusual path lengths indicative of injection attacks.
+- **Numerical Feature Scaling:** IP request frequencies, payload sizes, and temporal attributes are normalized using `StandardScaler` to ensure balanced feature weighting during model training and inference.
 
 ### 2. Algorithmic Approach
 
 Depending on the deployment configuration, the engine utilizes a dual-model strategy:
 
-* **Anomaly Detection (Unsupervised - `Isolation Forest`):** Used for zero-day threat detection. It isolates anomalies by randomly selecting features and split values, scoring log lines based on how easy they are to isolate. Outliers (anomalous requests) require fewer splits than normal traffic patterns.
-* **Threat Classification (Supervised - `Random Forest Classifier` / `Logistic Regression`):** Trained on labeled historical threat datasets to categorize requests into distinct severity tiers (`LOW`, `MEDIUM`, `CRITICAL`), isolating common attack signatures such as Cross-Site Scripting (XSS), SQL Injection (SQLi), and unauthorized administrative endpoint traversal.
+- **Anomaly Detection (Unsupervised - `Isolation Forest`):** Used for zero-day threat detection. It isolates anomalies by randomly selecting features and split values, scoring log lines based on how easy they are to isolate. Outliers (anomalous requests) require fewer splits than normal traffic patterns.
+- **Threat Classification (Supervised - `Random Forest Classifier` / `Logistic Regression`):** Trained on labeled historical threat datasets to categorize requests into distinct severity tiers (`LOW`, `MEDIUM`, `CRITICAL`), isolating common attack signatures such as Cross-Site Scripting (XSS), SQL Injection (SQLi), and unauthorized administrative endpoint traversal.
 
 ---
 
@@ -55,16 +55,17 @@ Depending on the deployment configuration, the engine utilizes a dual-model stra
 
 ## Technology Stack
 
-* **Backend Logic:** Python, FastAPI, Uvicorn
-* **Machine Learning & Data Processing:** scikit-learn, NumPy, Pandas
-* **Database Layer:** PostgreSQL (Supabase)
-* **Frontend User Interface:** React, Vite, Tailwind CSS
-* **Deployment & Hosting:** Vercel (Frontend), Render (Backend Infrastructure)
+- **Backend Logic:** Python, FastAPI, Uvicorn
+- **Machine Learning & Data Processing:** scikit-learn, NumPy, Pandas
+- **Database Layer:** PostgreSQL (Supabase)
+- **Frontend User Interface:** React, Vite, Tailwind CSS
+- **Deployment & Hosting:** Vercel (Frontend), Render (Backend Infrastructure)
 
 ---
+
 ## Project Structure
 
-\`\`\`text
+```
 phishermen/
 ├── backend/
 │   ├── database.py
@@ -83,7 +84,7 @@ phishermen/
 │   ├── tailwind.config.js
 │   └── vite.config.js
 └── README.md
-\`\`\`
+```
 
 ---
 
@@ -97,42 +98,49 @@ phishermen/
 
 ### 1. Clone the Repository
 
-\`\`\`bash
+```
 git clone https://github.com/karthikksabari/phishermen.git
 cd phishermen
-\`\`\`
+```
 
 ### 2. Backend Setup
 
-\`\`\`bash
+```
 cd backend
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-\`\`\`
+```
 
-On Windows, use `venv\Scripts\activate` instead of the `source` line above.
+On Windows, use `venv\Scripts\activate` instead of the `source` command above.
 
 Create a `.env` file inside the `backend` directory:
 
-\`\`\`env
+```
 SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_supabase_key
 GEMINI_API_KEY=your_gemini_api_key
-\`\`\`
+```
 
 Run the FastAPI development server:
 
-\`\`\`bash
+```
 uvicorn main:app --reload --port 8000
-\`\`\`
+```
 
 ### 3. Frontend Setup
 
 Open a new terminal window:
 
-\`\`\`bash
+```
 cd frontend
 npm install
 npm run dev
-\`\`\`
+```
+
+---
+
+## API Endpoints
+
+- `GET /` - Health check and system status verification.
+- `POST /analyze` - Accepts multipart file upload of server log files, executes feature extraction and machine learning inference, and returns structured threat analysis metadata.
